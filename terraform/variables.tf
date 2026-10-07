@@ -15,9 +15,21 @@ variable "project_name" {
 }
 
 variable "environment" {
-  type    = string
+  type = string
 }
 
 variable "owner" {
-  type    = string
+  type = string
+}
+
+variable "public_subnet_cidr" {
+  type = string
+}
+
+variable "common_tags" {
+  type = map(string)
+}
+
+variable "availability_zone" {
+  type = string
 }
