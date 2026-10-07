@@ -8,7 +8,7 @@ resource "aws_vpc" "cloudscope" {
 
   tags = merge(var.common_tags, {
 
-    Name = "${var.project_name}-vpc"})
+  Name = "${var.project_name}-vpc" })
 
 }
 
@@ -18,4 +18,9 @@ resource "aws_subnet" "cloudscope_public" {
   map_public_ip_on_launch = true
   availability_zone       = var.availability_zone
   tags                    = merge(var.common_tags, { Name = "${var.project_name}-public-subnet" })
+}
+
+resource "aws_internet_gateway" "cloudscope_igw" {
+  vpc_id = aws_vpc.cloudscope.id
+  tags   = merge(var.common_tags, { Name = "${var.project_name}-igw" })
 }
