@@ -23,7 +23,7 @@ Thumbs.db
 .terraform/
 *.tfstate
 *.tfstate.*
-terraform.tfvars
+
 
 # Logs
 *.log
@@ -34,3 +34,4 @@ terraform.tfvars
 # Coverage reports
 .coverage
 htmlcov/
+
