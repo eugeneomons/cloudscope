@@ -33,3 +33,7 @@ variable "common_tags" {
 variable "availability_zone" {
   type = string
 }
+
+variable "admin_public_ip" {
+  type = string
+}
