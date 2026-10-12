@@ -26,5 +26,5 @@ output "cloudscope_instance_id" {
 }
 
 output "cloudscope_public_dns" {
-    value = aws_instance.cloudscope_api.public_dns
+  value = aws_instance.cloudscope_api.public_dns
 }

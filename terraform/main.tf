@@ -63,6 +63,14 @@ resource "aws_security_group" "cloudscope_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "HTTP Traffic"
   }
+  ingress {
+    from_port   = 5000
+    to_port     = 5000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+    description = "CloudScope Flask Test"
+  }
   tags = merge(var.common_tags, { Name = "${var.project_name}-public-sg" })
 }
 
