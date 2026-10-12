@@ -37,3 +37,11 @@ variable "availability_zone" {
 variable "admin_public_ip" {
   type = string
 }
+
+variable "Instance_type" {
+  type = string
+}
+
+variable "key_pair_name" {
+  type = string
+}

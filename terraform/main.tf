@@ -65,3 +65,14 @@ resource "aws_security_group" "cloudscope_sg" {
   }
   tags = merge(var.common_tags, { Name = "${var.project_name}-public-sg" })
 }
+
+resource "aws_instance" "cloudscope_api" {
+  ami                         = data.aws_ami.amazon_linux.id
+  instance_type               = var.Instance_type
+  subnet_id                   = aws_subnet.cloudscope_public.id
+  vpc_security_group_ids      = [aws_security_group.cloudscope_sg.id]
+  associate_public_ip_address = true
+  user_data                   = file("${path.module}/scripts/userdata.sh")
+  key_name                    = var.key_pair_name
+  tags                        = merge(var.common_tags, { Name = "${var.project_name}-API" })
+}
