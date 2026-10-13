@@ -63,14 +63,7 @@ resource "aws_security_group" "cloudscope_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "HTTP Traffic"
   }
-  ingress {
-    from_port   = 5000
-    to_port     = 5000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
 
-    description = "CloudScope Flask Test"
-  }
   tags = merge(var.common_tags, { Name = "${var.project_name}-public-sg" })
 }
 
@@ -83,4 +76,69 @@ resource "aws_instance" "cloudscope_api" {
   user_data                   = file("${path.module}/scripts/userdata.sh")
   key_name                    = var.key_pair_name
   tags                        = merge(var.common_tags, { Name = "${var.project_name}-API" })
+  iam_instance_profile        = aws_iam_instance_profile.cloudscope_profile.name
+}
+
+resource "aws_iam_role" "cloudscope_role" {
+
+  name = "cloudscope-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+
+        Effect = "Allow"
+
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+
+  tags = merge(var.common_tags, { Name = "${var.project_name}-role" })
+}
+
+resource "aws_iam_policy" "cloudscope_policy" {
+
+  name = "cloudscope-policy"
+
+  policy = jsonencode({
+
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "ec2:DescribeInstances",
+          "sts:GetCallerIdentity"
+        ]
+
+        Resource = "*"
+      }
+    ]
+  })
+  tags = merge(var.common_tags, { Name = "${var.project_name}-policy" })
+}
+
+resource "aws_iam_role_policy_attachment" "cloudscope_attachment" {
+
+  role       = aws_iam_role.cloudscope_role.name
+  policy_arn = aws_iam_policy.cloudscope_policy.arn
+
+}
+
+resource "aws_iam_instance_profile" "cloudscope_profile" {
+
+  name = "cloudscope-profile"
+
+  role = aws_iam_role.cloudscope_role.name
+
+  tags = merge(var.common_tags, { Name = "${var.project_name}-profile" })
+
 }
