@@ -1,42 +1,49 @@
 # CloudScope
 
-CloudScope is an AWS Infrastructure Inventory & Monitoring API built with Python, Flask, boto3, and Terraform.
+CloudScope is an AWS Infrastructure Inventory & Monitoring API built with Python, Flask, boto3, Terraform, Gunicorn, and Nginx.
 
 The application retrieves live AWS infrastructure data and exposes it through REST API endpoints that provide inventory, reporting, and operational visibility.
 
 ---
 
-## Features
+## Key Features
 
 - AWS Identity Validation (STS)
 - EC2 Inventory Reporting
-- Running Instance Reporting
-- Stopped Instance Reporting
+- Running & Stopped Instance Reporting
 - Infrastructure Summary Reporting
+- IAM Role-Based Authentication
 - Terraform-Provisioned AWS Infrastructure
+- Nginx Reverse Proxy
+- Gunicorn Application Server
 
 ---
 
-## Current Architecture
+## Architecture
 
 ```text
 Internet
     │
     ▼
-CloudScope EC2
-(Amazon Linux 2023)
+Nginx
     │
     ▼
-Flask
+Gunicorn
     │
     ▼
-boto3
+CloudScope API
+    │
+    ▼
+IAM Instance Profile
+    │
+    ▼
+IAM Role
     │
     ▼
 AWS APIs
-        │
-        ├── EC2
-        └── STS
+       │
+       ├── EC2
+       └── STS
 ```
 
 ---
@@ -49,9 +56,9 @@ CloudScope is deployed on AWS using Terraform-managed infrastructure:
 - Public Subnet
 - Internet Gateway
 - Route Table
-- Route Table Association
 - Security Group
-- EC2 Instance
+- IAM Role & Instance Profile
+- EC2 Instance (Amazon Linux 2023)
 - S3 Remote Terraform State Backend
 
 ---
@@ -75,9 +82,9 @@ CloudScope is deployed on AWS using Terraform-managed infrastructure:
 
 ```json
 {
-  "total_instances": 1,
   "running_instances": 1,
-  "stopped_instances": 0
+  "stopped_instances": 0,
+  "total_instances": 1
 }
 ```
 
@@ -109,24 +116,23 @@ http://127.0.0.1:5000
 
 ## Deployment Milestones
 
-### AWS Infrastructure ✅
+### Infrastructure ✅
 
 - Terraform Project Structure
 - S3 Remote Backend
-- VPC
-- Public Subnet
-- Internet Gateway
-- Route Table
-- Security Group
+- VPC & Networking
+- Security Groups
 - EC2 Deployment
+- IAM Role & Instance Profile
 
-### Application Deployment ✅
+### Application Hosting ✅
 
-- Python Runtime Installation
-- Git Installation
-- Dependency Management
-- Flask Deployment
-- Public Health Endpoint Verification
+- Python Virtual Environment
+- Gunicorn Application Server
+- systemd Service Management
+- Nginx Reverse Proxy
+- Role-Based AWS Authentication
+- Public API Access
 
 ---
 
@@ -137,16 +143,17 @@ http://127.0.0.1:5000
 - Flask API
 - boto3 Integration
 - EC2 Inventory Reporting
-- AWS Deployment with Terraform
-- Public EC2 Hosting
-
-### In Progress 🚧
-
-- Gunicorn
+- Terraform Infrastructure
+- IAM Role Authentication
+- Gunicorn Deployment
 - Nginx Reverse Proxy
-- Application Load Balancer
-- HTTPS
+
+### Next Up 🚧
+
 - GitHub Actions CI/CD
+- Application Load Balancer (ALB)
+- HTTPS/TLS
+- Automated Deployment Pipeline
 
 ### Future Enhancements
 
@@ -166,12 +173,15 @@ http://127.0.0.1:5000
 - Flask
 - boto3
 - Terraform
+- Nginx
+- Gunicorn
 - AWS EC2
-- AWS VPC
+- AWS IAM
 - AWS STS
+- AWS VPC
+- Amazon Linux 2023
 - Git
 - GitHub
-- Amazon Linux 2023
 
 ---
 
@@ -179,4 +189,4 @@ http://127.0.0.1:5000
 
 **Eugene Omons**
 
-Cloud Engineering & DevOps Portfolio Project demonstrating AWS infrastructure provisioning, Python development, Infrastructure as Code, and cloud operations.
+Cloud Engineering & DevOps portfolio project demonstrating Infrastructure as Code, AWS networking, IAM, Linux administration, application hosting, and cloud operations.
