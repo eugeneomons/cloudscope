@@ -24,9 +24,16 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-      - name: Test SSH Connection
+      - name: Pull Latest Code
         run: |
           ssh -o StrictHostKeyChecking=no \
             -i ~/.ssh/id_ed25519 \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
-            "hostname"
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+
+            cd ~/cloudscope
+
+            pwd
+
+            git status
+
+            EOF

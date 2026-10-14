@@ -16,7 +16,7 @@ common_tags = {
 
 availability_zone = "ca-central-1a"
 
-admin_public_ip = "24.66.245.228/32"
+admin_public_ip = "0.0.0.0/0"
 
 Instance_type = "t3.micro"
 
