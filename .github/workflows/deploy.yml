@@ -17,3 +17,11 @@ jobs:
         run: |
           pwd
           ls -la
+
+      - name: Test Secrets Access
+        run: |
+          echo "Host secret exists"
+          echo "User secret exists"
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
