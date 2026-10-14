@@ -24,12 +24,13 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
-      - name: Pull Latest Code
+      - name: Deploy CloudScope
         run: |
           ssh -o StrictHostKeyChecking=no \
           -i ~/.ssh/id_ed25519 \
           ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
             cd ~/cloudscope &&
-            pwd &&
-            git status
+            git pull &&
+            sudo systemctl restart cloudscope &&
+            sudo systemctl status cloudscope --no-pager
           "
