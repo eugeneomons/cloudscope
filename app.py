@@ -86,7 +86,7 @@ def health():
 @app.route("/version")
 def version():
     return {
-        "version": "1.0.0"
+        "version": "1.0.1"
     }
 
 @app.route("/summary")
