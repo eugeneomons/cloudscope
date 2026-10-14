@@ -6,7 +6,10 @@ app = Flask(__name__)
 
 def get_ec2_response():
 
-    ec2 = boto3.client("ec2")
+    ec2 = boto3.client(
+    "ec2",
+    region_name="ca-central-1"
+)
 
     return ec2.describe_instances()
 
@@ -50,7 +53,10 @@ def get_instances_by_state(state):
 @app.route("/identity")
 def identity():
 
-    sts = boto3.client("sts")
+    sts = boto3.client(
+    "sts",
+    region_name="ca-central-1"
+)
 
     response = sts.get_caller_identity()
 
@@ -125,6 +131,6 @@ def running_instances():
     return {
         "instances": get_instances_by_state("running")
     }
-    
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
