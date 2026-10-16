@@ -1,8 +1,8 @@
 # CloudScope
 
-CloudScope is an AWS Infrastructure Inventory & Monitoring API built with Python, Flask, boto3, Terraform, Gunicorn, and Nginx.
+CloudScope is a cloud-native AWS infrastructure inventory and reporting API built with **Python, Flask, Terraform, Nginx, Gunicorn, IAM Roles, and GitHub Actions**.
 
-The application retrieves live AWS infrastructure data and exposes it through REST API endpoints that provide inventory, reporting, and operational visibility.
+The application retrieves live AWS infrastructure data using the AWS SDK (boto3) and exposes operational insights through REST API endpoints.
 
 ---
 
@@ -13,16 +13,29 @@ The application retrieves live AWS infrastructure data and exposes it through RE
 - Running & Stopped Instance Reporting
 - Infrastructure Summary Reporting
 - IAM Role-Based Authentication
-- Terraform-Provisioned AWS Infrastructure
+- Terraform-Provisioned Infrastructure
 - Nginx Reverse Proxy
 - Gunicorn Application Server
+- GitHub Actions CI/CD Pipeline
 
 ---
 
 ## Architecture
 
 ```text
-Internet
+Developer
+    │
+    ▼
+GitHub
+    │
+    ▼
+GitHub Actions
+    │
+    ▼
+SSH Deployment
+    │
+    ▼
+EC2 (Amazon Linux 2023)
     │
     ▼
 Nginx
@@ -41,25 +54,25 @@ IAM Role
     │
     ▼
 AWS APIs
-       │
-       ├── EC2
-       └── STS
+   ├── EC2
+   └── STS
 ```
 
 ---
 
 ## Infrastructure
 
-CloudScope is deployed on AWS using Terraform-managed infrastructure:
+Infrastructure is provisioned and managed with Terraform:
 
 - VPC
 - Public Subnet
 - Internet Gateway
 - Route Table
 - Security Group
-- IAM Role & Instance Profile
-- EC2 Instance (Amazon Linux 2023)
-- S3 Remote Terraform State Backend
+- EC2 Instance
+- IAM Role
+- IAM Instance Profile
+- S3 Remote Terraform Backend
 
 ---
 
@@ -67,7 +80,6 @@ CloudScope is deployed on AWS using Terraform-managed infrastructure:
 
 | Endpoint | Description |
 |-----------|-------------|
-| `/` | Welcome page |
 | `/health` | Health check |
 | `/version` | Application version |
 | `/identity` | AWS account identity |
@@ -78,92 +90,25 @@ CloudScope is deployed on AWS using Terraform-managed infrastructure:
 
 ---
 
-## Sample Response
+## CI/CD Pipeline
 
-```json
-{
-  "running_instances": 1,
-  "stopped_instances": 0,
-  "total_instances": 1
-}
-```
-
----
-
-## Running Locally
-
-```bash
-git clone https://github.com/eugeneomons/cloudscope.git
-
-cd cloudscope
-
-python3 -m venv venv
-
-source venv/bin/activate
-
-pip install -r requirements.txt
-
-python app.py
-```
-
-Access:
+CloudScope uses GitHub Actions for automated deployments.
 
 ```text
-http://127.0.0.1:5000
+git push
+    ↓
+GitHub Actions
+    ↓
+SSH into EC2
+    ↓
+git pull
+    ↓
+Install Dependencies
+    ↓
+Restart CloudScope
+    ↓
+Verify Service Status
 ```
-
----
-
-## Deployment Milestones
-
-### Infrastructure ✅
-
-- Terraform Project Structure
-- S3 Remote Backend
-- VPC & Networking
-- Security Groups
-- EC2 Deployment
-- IAM Role & Instance Profile
-
-### Application Hosting ✅
-
-- Python Virtual Environment
-- Gunicorn Application Server
-- systemd Service Management
-- Nginx Reverse Proxy
-- Role-Based AWS Authentication
-- Public API Access
-
----
-
-## Roadmap
-
-### Completed ✅
-
-- Flask API
-- boto3 Integration
-- EC2 Inventory Reporting
-- Terraform Infrastructure
-- IAM Role Authentication
-- Gunicorn Deployment
-- Nginx Reverse Proxy
-
-### Next Up 🚧
-
-- GitHub Actions CI/CD
-- Application Load Balancer (ALB)
-- HTTPS/TLS
-- Automated Deployment Pipeline
-
-### Future Enhancements
-
-- `/instance/<instance_id>`
-- `/public-instances`
-- `/untagged-instances`
-- `/security-groups`
-- `/s3-buckets`
-- CloudWatch Integration
-- Operational Dashboard
 
 ---
 
@@ -173,15 +118,47 @@ http://127.0.0.1:5000
 - Flask
 - boto3
 - Terraform
-- Nginx
-- Gunicorn
 - AWS EC2
 - AWS IAM
 - AWS STS
-- AWS VPC
 - Amazon Linux 2023
+- Nginx
+- Gunicorn
+- systemd
+- GitHub Actions
 - Git
 - GitHub
+
+---
+
+## Skills Demonstrated
+
+- Infrastructure as Code (Terraform)
+- AWS Networking & Security
+- IAM Role Authentication
+- Linux Administration
+- Reverse Proxy Configuration
+- Application Hosting
+- CI/CD Automation
+- GitHub Actions
+- Deployment Troubleshooting
+- Cloud Operations
+
+---
+
+## Project Status
+
+✅ CloudScope v1.0 Complete
+
+Features implemented:
+
+- Infrastructure provisioning with Terraform
+- AWS API integration using boto3
+- Production deployment on EC2
+- Nginx reverse proxy
+- Gunicorn application hosting
+- IAM role-based authentication
+- GitHub Actions automated deployment pipeline
 
 ---
 
@@ -189,4 +166,6 @@ http://127.0.0.1:5000
 
 **Eugene Omons**
 
-Cloud Engineering & DevOps portfolio project demonstrating Infrastructure as Code, AWS networking, IAM, Linux administration, application hosting, and cloud operations.
+AWS Certified Solutions Architect – Associate
+
+Cloud & DevOps Engineer focused on AWS, Terraform, Linux, Automation, and Infrastructure as Code.
